@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1 align="center">✨ Full-Stack Interview Platform ✨</h1>
 
 ![Demo App](/frontend/public/screenshot-for-readme.png)
@@ -77,3 +78,6 @@ cd frontend
 npm install
 npm run dev
 ```
+=======
+# Interview-Sync
+>>>>>>> 850d64fc1ac69bced88942401d5e50bdf4631de0
