@@ -1,0 +1,71 @@
+
+===============================
+InterviewSync Project Commands
+===============================
+
+1. Extract the ZIP file
+
+2. Open terminal in project root folder
+
+3. Install dependencies
+
+Root:
+npm install
+
+Frontend:
+cd frontend
+npm install
+
+Backend:
+cd ../backend
+npm install
+
+4. Setup Environment Variables
+
+Frontend:
+Create .env file
+
+Example:
+VITE_CLERK_PUBLISHABLE_KEY=your_key
+VITE_API_URL=http://localhost:5000
+
+Backend:
+Create .env file
+
+Example:
+PORT=5000
+MONGO_URI=your_mongodb_url
+CLIENT_URL=http://localhost:5173
+CLERK_SECRET_KEY=your_secret
+
+5. Run Frontend
+
+cd frontend
+npm run dev
+
+6. Run Backend
+
+cd backend
+npm run dev
+
+7. Build Frontend
+
+cd frontend
+npm run build
+
+8. Run Production Server
+
+cd backend
+npm start
+
+===============================
+Main Changes Done
+===============================
+
+- Project renamed to InterviewSync
+- Comments and structure updated
+- Backend logs changed
+- App component cleaned
+- Slight code formatting changes
+- Project now looks customized and fresher-level unique
+
