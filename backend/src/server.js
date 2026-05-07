@@ -17,9 +17,10 @@ const app = express();
 // =====================
 app.use(express.json());
 
+// 🔥 FIXED CORS (allow all origins - testing purpose)
 app.use(
   cors({
-    origin: ENV.CLIENT_URL,
+    origin: true,
     credentials: true,
   })
 );
@@ -33,7 +34,7 @@ app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/chat", chatRoutes);
 app.use("/api/sessions", sessionRoutes);
 
-// health route (important for testing)
+// health route
 app.get("/", (req, res) => {
   res.send("🚀 InterviewSync Backend is Running");
 });
