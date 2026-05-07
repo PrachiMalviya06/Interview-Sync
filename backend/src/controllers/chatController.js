@@ -1,30 +1,24 @@
-import { chatClient } from "../lib/stream.js";
+import { streamClient } from "../lib/stream.js";
 
 export async function getStreamToken(req, res) {
   try {
-    console.log("REQ USER:", req.user);
-
-    if (!req.user) {
-      return res.status(401).json({
-        message: "Unauthorized - user missing",
-      });
-    }
-
-    const userId = req.user.clerkId;
+    const userId = req.auth.userId;
 
     if (!userId) {
       return res.status(401).json({
-        message: "Clerk ID missing",
+        message: "Unauthorized",
       });
     }
 
-    const token = chatClient.createToken(userId);
+    const token = streamClient.generateUserToken({
+      user_id: userId,
+    });
 
     res.status(200).json({
       token,
       userId,
-      userName: req.user.name,
-      userImage: req.user.image,
+      userName: "User",
+      userImage: "",
     });
   } catch (error) {
     console.log("Error in getStreamToken controller:", error);
