@@ -12,12 +12,14 @@ import sessionRoutes from "./routes/sessionRoute.js";
 
 const app = express();
 
+// 🔥 IMPORTANT FOR RENDER + CLERK
+app.set("trust proxy", 1);
+
 // =====================
 // MIDDLEWARE
 // =====================
-app.use(express.json());
 
-// 🔥 FIXED CORS (allow all origins - testing purpose)
+// 🔥 CORS FIRST
 app.use(
   cors({
     origin: true,
@@ -25,6 +27,10 @@ app.use(
   })
 );
 
+// 🔥 JSON
+app.use(express.json());
+
+// 🔥 CLERK MIDDLEWARE AFTER CORS
 app.use(clerkMiddleware());
 
 // =====================
@@ -34,7 +40,9 @@ app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/chat", chatRoutes);
 app.use("/api/sessions", sessionRoutes);
 
-// health route
+// =====================
+// HEALTH ROUTES
+// =====================
 app.get("/", (req, res) => {
   res.send("🚀 InterviewSync Backend is Running");
 });
