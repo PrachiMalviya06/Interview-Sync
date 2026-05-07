@@ -22,7 +22,7 @@ app.set("trust proxy", 1);
 // 🔥 CORS FIRST
 app.use(
   cors({
-    origin: "https://interview-sync-two.vercel.app",
+    origin: true,
     credentials: true,
   })
 );
