@@ -148,7 +148,7 @@ export async function endSession(req, res) {
     // delete stream video call
     const call = streamClient.video.call("default", session.callId);
     await call.delete({ hard: true });
-    console.log(error);
+    console.log(`Stream video call with callId ${session.callId} deleted successfully.`);
 
     // delete stream chat channel
     const channel = chatClient.channel("messaging", session.callId);

@@ -22,13 +22,25 @@ app.set("trust proxy", 1);
 // 🔥 CORS FIRST
 app.use(
   cors({
-    origin: true,
+    origin: [
+      "http://localhost:5173",
+      "https://interview-sync-two.vercel.app",
+    ],
     credentials: true,
   })
 );
 
 // 🔥 JSON
 app.use(express.json());
+
+
+
+
+app.use((req, res, next) => {
+  console.log("ORIGIN:", req.headers.origin);
+  console.log("COOKIE:", req.headers.cookie);
+  next();
+});
 
 // 🔥 CLERK MIDDLEWARE AFTER CORS
 app.use(clerkMiddleware());
