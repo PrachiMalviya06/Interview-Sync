@@ -41,11 +41,39 @@ function SessionPage() {
   const [code, setCode] = useState(problemData?.starterCode?.javascript || "");
 
   useEffect(() => {
-    if (!session || !user || loadingSession) return;
-    if (isHost || isParticipant) return;
-    console.log("TRYING TO JOIN SESSION:", id);
-    joinSessionMutation.mutate(id, { onSuccess: refetch });
-  }, [session, user, loadingSession, isHost, isParticipant, id]);
+  console.log("========== SESSION DEBUG ==========");
+  console.log("SESSION:", session);
+  console.log("USER:", user?.id);
+  console.log("IS HOST:", isHost);
+  console.log("IS PARTICIPANT:", isParticipant);
+
+  if (!session || !user || loadingSession) {
+    console.log("WAITING FOR DATA...");
+    return;
+  }
+
+  if (isHost) {
+    console.log("USER IS HOST");
+    return;
+  }
+
+  if (isParticipant) {
+    console.log("USER IS ALREADY PARTICIPANT");
+    return;
+  }
+
+  console.log("TRYING TO JOIN SESSION:", id);
+
+  joinSessionMutation.mutate(id, {
+    onSuccess: () => {
+      console.log("JOIN SUCCESS");
+      refetch();
+    },
+    onError: (err) => {
+      console.log("JOIN ERROR:", err?.response?.data);
+    },
+  });
+}, [session, user, loadingSession, isHost, isParticipant, id]);
 
   useEffect(() => {
     if (!session || loadingSession) return;
