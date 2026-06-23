@@ -5,6 +5,9 @@ export const protectRoute = [
   requireAuth(),
   async (req, res, next) => {
     try {
+
+      console.log("AUTH HEADER:", req.headers.authorization);
+      console.log("COOKIES:", req.headers.cookie);
       const clerkId = req.auth().userId;
 
       if (!clerkId) {
