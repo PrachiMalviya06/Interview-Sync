@@ -138,7 +138,7 @@ export async function joinSession(req, res) {
     }
 
     // Agar koi aur participant already hai
-    if (session.participant) {
+    if (session.participant.length >= 1) {
       console.log("ROOM FULL");
       console.log("PARTICIPANT VALUE:", session.participant);
 
@@ -148,7 +148,7 @@ export async function joinSession(req, res) {
       });
     }
 
-    session.participant = userId;
+    session.participant.push(userId);
     await session.save();
 
     console.log("PARTICIPANT SAVED:", session.participant);
