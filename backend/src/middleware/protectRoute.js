@@ -3,8 +3,7 @@ import User from "../models/User.js";
 
 export const protectRoute = [
    (req, res, next) => {
-    console.log("AUTH HEADER BEFORE:", req.headers.authorization);
-    console.log("COOKIE BEFORE:", req.headers.cookie);
+    console.log("AUTH OK:", req.auth().userId);
     next();
   },
   requireAuth(),
