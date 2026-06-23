@@ -21,7 +21,15 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
       if (session.status === "completed") return;
 
       try {
-        const { token, userId, userName, userImage } = await sessionApi.getStreamToken();
+        console.log("SESSION:", session);
+        console.log("CALL ID:", session.callId);
+        console.log("IS HOST:", isHost);
+        console.log("IS PARTICIPANT:", isParticipant);
+
+        const { token, userId, userName, userImage } =
+          await sessionApi.getStreamToken();
+
+        console.log("STREAM TOKEN RECEIVED");
 
         const client = await initializeStreamClient(
           {
@@ -35,10 +43,22 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
         setStreamClient(client);
 
         videoCall = client.call("default", session.callId);
-        await videoCall.join({ create: true });
+
+        // HOST creates call
+        if (isHost) {
+          console.log("HOST JOINING CALL");
+          await videoCall.join({ create: true });
+        } else {
+          console.log("PARTICIPANT JOINING CALL");
+          await videoCall.join();
+        }
+
+        console.log("VIDEO CALL JOINED");
+
         setCall(videoCall);
 
         const apiKey = import.meta.env.VITE_STREAM_API_KEY;
+
         chatClientInstance = StreamChat.getInstance(apiKey);
 
         await chatClientInstance.connectUser(
@@ -49,24 +69,32 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
           },
           token
         );
+
         setChatClient(chatClientInstance);
 
-        const chatChannel = chatClientInstance.channel("messaging", session.callId);
+        const chatChannel = chatClientInstance.channel(
+          "messaging",
+          session.callId
+        );
+
         await chatChannel.watch();
+
         setChannel(chatChannel);
+
+        console.log("CHAT CONNECTED");
       } catch (error) {
+        console.error("STREAM ERROR:", error);
         toast.error("Failed to join video call");
-        console.error("Error init call", error);
       } finally {
         setIsInitializingCall(false);
       }
     };
 
-    if (session && !loadingSession) initCall();
+    if (session && !loadingSession) {
+      initCall();
+    }
 
-    // cleanup - performance reasons
     return () => {
-      // iife
       (async () => {
         try {
           if (videoCall) await videoCall.leave();
