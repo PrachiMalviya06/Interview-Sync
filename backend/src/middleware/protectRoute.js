@@ -2,12 +2,16 @@ import { requireAuth } from "@clerk/express";
 import User from "../models/User.js";
 
 export const protectRoute = [
+   (req, res, next) => {
+    console.log("AUTH HEADER BEFORE:", req.headers.authorization);
+    console.log("COOKIE BEFORE:", req.headers.cookie);
+    next();
+  },
   requireAuth(),
   async (req, res, next) => {
     try {
 
-      console.log("AUTH HEADER:", req.headers.authorization);
-      console.log("COOKIES:", req.headers.cookie);
+     
       const clerkId = req.auth().userId;
 
       if (!clerkId) {
