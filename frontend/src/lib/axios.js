@@ -1,6 +1,4 @@
 import axios from "axios";
-import { Clerk } from "@clerk/clerk-js";
-  console.log("TOKEN:", token);
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -10,6 +8,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(async (config) => {
   const token = await window.Clerk?.session?.getToken();
 
+  console.log("TOKEN:", token);
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
