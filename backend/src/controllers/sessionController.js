@@ -100,36 +100,77 @@ export async function joinSession(req, res) {
 
     const session = await Session.findById(id);
 
-    if (!session) return res.status(404).json({ message: "Session not found" });
+    if (!session) {
+      return res.status(404).json({
+        message: "Session not found",
+      });
+    }
+
+    console.log("========== JOIN SESSION ==========");
+    console.log("SESSION ID:", id);
+    console.log("USER ID:", userId);
+    console.log("PARTICIPANT:", session.participant);
+    console.log("STATUS:", session.status);
 
     if (session.status !== "active") {
-      return res.status(400).json({ message: "Cannot join a completed session" });
+      return res.status(400).json({
+        message: "Cannot join a completed session",
+      });
     }
 
     if (session.host.toString() === userId.toString()) {
-      return res.status(400).json({ message: "Host cannot join their own session as participant" });
+      return res.status(400).json({
+        message: "Host cannot join their own session as participant",
+      });
     }
 
+    // Agar same user pehle se participant hai
+    if (
+      session.participant &&
+      session.participant.toString() === userId.toString()
+    ) {
+      console.log("USER ALREADY PARTICIPANT");
 
-    console.log("========== JOIN SESSION ==========");
-console.log("SESSION ID:", id);
-console.log("USER ID:", userId);
-console.log("PARTICIPANT:", session.participant);
-console.log("STATUS:", session.status);
+      return res.status(200).json({
+        session,
+        message: "Already joined",
+      });
+    }
 
-    // check if session is already full - has a participant
-    if (session.participant) return res.status(409).json({ message: "Session is full" });
+    // Agar koi aur participant already hai
+    if (session.participant) {
+      console.log("ROOM FULL");
+      console.log("PARTICIPANT VALUE:", session.participant);
+
+      return res.status(409).json({
+        message: "Session is full",
+        participant: session.participant,
+      });
+    }
 
     session.participant = userId;
     await session.save();
 
-    const channel = chatClient.channel("messaging", session.callId);
-    await channel.addMembers([clerkId]);
+    console.log("PARTICIPANT SAVED:", session.participant);
 
-    res.status(200).json({ session });
+    const channel = chatClient.channel("messaging", session.callId);
+
+    try {
+      await channel.addMembers([clerkId]);
+    } catch (err) {
+      console.log("ADD MEMBER ERROR:", err.message);
+    }
+
+    res.status(200).json({
+      session,
+      message: "Joined successfully",
+    });
   } catch (error) {
-    console.log("Error in joinSession controller:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log("Error in joinSession controller:", error);
+
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
   }
 }
 
