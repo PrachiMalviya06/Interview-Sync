@@ -41,6 +41,7 @@ function DashboardPage() {
       {
         problem: roomConfig.problem,
         difficulty: roomConfig.difficulty.toLowerCase(),
+         participantId: roomConfig.participantId,
       },
       {
         onSuccess: (data) => {

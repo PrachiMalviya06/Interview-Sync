@@ -1,6 +1,10 @@
 import { Code2Icon, LoaderIcon, PlusIcon, XIcon } from "lucide-react";
 import { PROBLEMS } from "../data/problems";
 
+
+const [participantId, setParticipantId] = useState("");
+
+
 function CreateSessionModal({
   isOpen,
   onClose,

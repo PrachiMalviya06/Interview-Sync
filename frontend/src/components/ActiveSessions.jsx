@@ -78,6 +78,17 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
               </div>
 
               {/* RIGHT */}
+              <button
+  onClick={() => {
+    navigator.clipboard.writeText(
+      `${window.location.origin}/session/${session._id}`
+    );
+    alert("Invite Link Copied!");
+  }}
+  className="px-3 py-2 text-xs rounded-lg bg-green-600 hover:bg-green-700 mr-2"
+>
+  Invite
+</button>
               {session.participant && !isUserInSession(session) ? (
                 <span className="text-xs px-3 py-1 rounded bg-red-500/20 text-red-400">
                   Full
