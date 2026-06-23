@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { Clerk } from "@clerk/clerk-js";
+import { Clerk } from "@clerk/clerk-js";
   console.log("TOKEN:", token);
 
 const axiosInstance = axios.create({
