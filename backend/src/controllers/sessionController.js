@@ -110,6 +110,13 @@ export async function joinSession(req, res) {
       return res.status(400).json({ message: "Host cannot join their own session as participant" });
     }
 
+
+    console.log("========== JOIN SESSION ==========");
+console.log("SESSION ID:", id);
+console.log("USER ID:", userId);
+console.log("PARTICIPANT:", session.participant);
+console.log("STATUS:", session.status);
+
     // check if session is already full - has a participant
     if (session.participant) return res.status(409).json({ message: "Session is full" });
 
